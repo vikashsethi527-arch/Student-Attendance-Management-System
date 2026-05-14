@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Student Attendance Management System</title>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body{
+        background:#f4f7fc;
+        padding:20px;
+    }
+
+    .container{
+        max-width:900px;
+        margin:auto;
+        background:white;
+        padding:20px;
+        border-radius:10px;
+        box-shadow:0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1{
+        text-align:center;
+        margin-bottom:20px;
+        color:#333;
+    }
+
+    .input-section{
+        display:flex;
+        gap:10px;
+        margin-bottom:20px;
+    }
+
+    .input-section input{
+        flex:1;
+        padding:10px;
+        border:1px solid #ccc;
+        border-radius:5px;
+    }
+
+    .input-section button{
+        padding:10px 20px;
+        background:#007bff;
+        color:white;
+        border:none;
+        border-radius:5px;
+        cursor:pointer;
+    }
+
+    .input-section button:hover{
+        background:#0056b3;
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+    }
+
+    table th, table td{
+        border:1px solid #ddd;
+        padding:12px;
+        text-align:center;
+    }
+
+    table th{
+        background:#007bff;
+        color:white;
+    }
+
+    .present{
+        background:#28a745;
+        color:white;
+        border:none;
+        padding:8px 12px;
+        border-radius:5px;
+        cursor:pointer;
+    }
+
+    .absent{
+        background:#dc3545;
+        color:white;
+        border:none;
+        padding:8px 12px;
+        border-radius:5px;
+        cursor:pointer;
+    }
+
+    .delete-btn{
+        background:#ff9800;
+        color:white;
+        border:none;
+        padding:8px 12px;
+        border-radius:5px;
+        cursor:pointer;
+    }
+
+    .summary{
+        margin-top:20px;
+        font-size:18px;
+        font-weight:bold;
+        color:#333;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Student Attendance Management System</h1>
+
+    <div class="input-section">
+        <input type="text" id="studentName" placeholder="Enter Student Name">
+        <button onclick="addStudent()">Add Student</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Roll No</th>
+                <th>Student Name</th>
+                <th>Attendance</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentTable">
+        </tbody>
+    </table>
+
+    <div class="summary">
+        Total Students: <span id="totalStudents">0</span>
+    </div>
+</div>
+
+<script>
+    let rollNumber = 1;
+
+    function addStudent() {
+        let studentName = document.getElementById("studentName").value;
+
+        if(studentName === ""){
+            alert("Please enter student name");
+            return;
+        }
+
+        let table = document.getElementById("studentTable");
+
+        let row = table.insertRow();
+
+        let cell1 = row.insertCell(0);
+        let cell2 = row.insertCell(1);
+        let cell3 = row.insertCell(2);
+        let cell4 = row.insertCell(3);
+
+        cell1.innerHTML = rollNumber;
+        cell2.innerHTML = studentName;
+
+        cell3.innerHTML = `
+            <button class="present" onclick="markPresent(this)">Present</button>
+            <button class="absent" onclick="markAbsent(this)">Absent</button>
+        `;
+
+        cell4.innerHTML = `
+            <button class="delete-btn" onclick="deleteStudent(this)">Delete</button>
+        `;
+
+        rollNumber++;
+
+        document.getElementById("studentName").value = "";
+
+        updateTotalStudents();
+    }
+
+    function markPresent(button){
+        let row = button.parentElement.parentElement;
+        row.style.backgroundColor = "#d4edda";
+    }
+
+    function markAbsent(button){
+        let row = button.parentElement.parentElement;
+        row.style.backgroundColor = "#f8d7da";
+    }
+
+    function deleteStudent(button){
+        let row = button.parentElement.parentElement;
+        row.remove();
+
+        updateTotalStudents();
+    }
+
+    function updateTotalStudents(){
+        let table = document.getElementById("studentTable");
+        let total = table.rows.length;
+
+        document.getElementById("totalStudents").innerHTML = total;
+    }
+</script>
+
+</body>
+</html>
